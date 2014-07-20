@@ -1,4 +1,4 @@
 MyPublicRepository
 ==================
 
-FreeLance projects are loaded here
+All the FreeLance projects undertaken by me( Aditya ) are loaded here.
