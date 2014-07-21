@@ -26,12 +26,20 @@ public class Buggyapkload
 	@Test
 	public void test_Buggyapkload()  throws InterruptedException, AWTException
 	{
+		Thread.sleep(1000);
+		
 		// Launch appvigil.co webpage
 		LaunchBrowserTest.driver.get("http://www.appvigil.co/");
 
+		// Wait for a second
+		Thread.sleep(1000);
+		
 		// Set Actions to do mouse hover equivalent mouse actions
 		Actions action = new Actions(LaunchBrowserTest.driver);
-
+		
+		// Robot API's to perform key presses
+		Robot robot = new Robot();
+		
 		// Get the current page's window handle
 		String parenthandle = LaunchBrowserTest.driver.getWindowHandle();
 
@@ -43,10 +51,6 @@ public class Buggyapkload
 		StringSelection str = new StringSelection(LaunchBrowserTest.buggyapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
-		// Robot API's to perform key presses
-		Robot robot = new Robot();
-		robot.delay(1000);
-
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_V);
@@ -54,10 +58,9 @@ public class Buggyapkload
 
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
-		robot.delay(1000);
 
 		//	LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(180, TimeUnit.SECONDS);
-		Thread.sleep(180000);
+		Thread.sleep(LaunchBrowserTest.timeout);
 
 		// Check for security vulnerability issues
 		String s = LaunchBrowserTest.driver.getPageSource();
@@ -65,6 +68,10 @@ public class Buggyapkload
 		if( s.contains("Security Vulnerabilities in Your Android App com.fss.obc.apk") == true )
 		{
 			System.out.println("Security vulnerabilities found");
+		}
+		else
+		{
+			System.out.println("Security Vulnerabilities not found");
 		}
 	}
 

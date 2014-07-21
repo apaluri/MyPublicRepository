@@ -23,13 +23,96 @@ import com.gargoylesoftware.htmlunit.html.SubmittableElement;
  * @author Aditya
  *
  */
-public class Free_user 
+public class Free_Cleanuser 
 {
 	@Test
-	public void test_freeuserlogin() throws InterruptedException
+	public void test_InvalidPasswordField() throws InterruptedException
 	{
 		LaunchBrowserTest.driver.get("http://appvigil.co/my-account/login/");
 
+		Thread.sleep(1000);
+		
+		// Set Actions to do mouse hover equivalent mouse actions
+		Actions action = new Actions(LaunchBrowserTest.driver);
+
+		WebElement enterusername = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[1]/div/input"));
+		enterusername.sendKeys("testuser.parent.free@wegilant.com");
+		Thread.sleep(1000);
+
+		WebElement password = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[2]/div/input"));
+		password.clear();
+		Thread.sleep(1000);
+		
+		WebElement signin = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[4]/div/input"));
+		action.moveToElement(signin).click().build().perform();
+		Thread.sleep(1000);
+		
+		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[3]/a/ul/li"));
+		System.out.println(checkmsg.getText());
+		String actualstring = "Please enter your password";
+		Assert.assertEquals(checkmsg.getText(), actualstring );
+
+
+	}
+
+	@Test(dependsOnMethods = {"test_InvalidPasswordField"})
+	public void test_InvalidEmailidField() throws InterruptedException
+	{
+		
+		// Set Actions to do mouse hover equivalent mouse actions
+		Actions action = new Actions(LaunchBrowserTest.driver);
+
+		WebElement enterusername = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[1]/div/input"));
+		enterusername.clear();
+		Thread.sleep(1000);
+
+		WebElement password = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[2]/div/input"));
+		password.sendKeys("12345678");
+		Thread.sleep(1000);
+		
+		WebElement signin = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[4]/div/input"));
+		action.moveToElement(signin).click().build().perform();
+		Thread.sleep(1000);
+		
+		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[3]/a/ul/li"));
+		System.out.println(checkmsg.getText());
+		String actualstring = "Please enter the email address";
+		Assert.assertEquals(checkmsg.getText(), actualstring );
+
+
+	}
+	
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField"})
+	public void test_InvalidCredentials() throws InterruptedException
+	{
+		
+		// Set Actions to do mouse hover equivalent mouse actions
+		Actions action = new Actions(LaunchBrowserTest.driver);
+
+		WebElement enterusername = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[1]/div/input"));
+		enterusername.sendKeys("testuser.parent.free@wegilant.com");
+		Thread.sleep(1000);
+
+		WebElement password = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[2]/div/input"));
+		password.sendKeys("12345211");
+		Thread.sleep(1000);
+		
+		WebElement signin = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[4]/div/input"));
+		action.moveToElement(signin).click().build().perform();
+		Thread.sleep(1000);
+		
+		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/div/p"));
+		System.out.println(checkmsg.getText());
+		String actualstring = "Invalid Username or Password";
+		Assert.assertEquals(checkmsg.getText(), actualstring );
+
+
+	}
+	
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField","test_InvalidCredentials"})
+	public void test_ValidCredentials() throws InterruptedException
+	{
+		
 		// Set Actions to do mouse hover equivalent mouse actions
 		Actions action = new Actions(LaunchBrowserTest.driver);
 
@@ -40,14 +123,13 @@ public class Free_user
 		WebElement password = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[2]/div/input"));
 		password.sendKeys("12345678");
 		Thread.sleep(1000);
-
+		
 		WebElement signin = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[2]/div/form/div[4]/div/input"));
 		action.moveToElement(signin).click().build().perform();
 		Thread.sleep(1000);
-
 	}
-
-	@Test(dependsOnMethods = {"test_freeuserlogin"})
+	
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField","test_InvalidCredentials","test_ValidCredentials"})
 	public void test_NewAuditCleanapk() throws InterruptedException, AWTException
 	{
 		Actions action = new Actions(LaunchBrowserTest.driver);
@@ -61,77 +143,29 @@ public class Free_user
 		loadapk.click();
 
 		// Upload the file adding the required path in StringSelection arguements
-		StringSelection str = new StringSelection("C:\\Users\\Aditya\\Desktop\\apks\\aaaaaHelloWorld.apk");
+		StringSelection str = new StringSelection(LaunchBrowserTest.cleanapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 
-		Thread.sleep(2000);
-
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		WebElement submitform = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/div/form"));
 		submitform.submit();
-		Thread.sleep(1000);
+		Thread.sleep(LaunchBrowserTest.timeout);
 
-		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/form/div[2]"));
+		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/form/div"));
 		System.out.println(checkmsg.getText());
-		String actualstring = "×" + '\n' + "Warning!" + '\n' + "You have Insufficient Credits to SCAN your android app. To get more credits click here";
+		String actualstring = "×" + '\n' + "Warning!" + '\n' + "Hey there... You need to upgrade your account to complete this scan. Please upgrade your account here";
 		Assert.assertEquals(checkmsg.getText(), actualstring );
 
-		WebElement clickonlink = LaunchBrowserTest.driver.findElement(By.linkText("here"));
-		action.moveToElement(clickonlink).click().build().perform();
-		Thread.sleep(1000);
-
-	}
-
-	@Test(dependsOnMethods = {"test_freeuserlogin","test_NewAuditCleanapk"})
-	public void test_NewAuditBuggyapk() throws InterruptedException, AWTException
-	{
-		Actions action = new Actions(LaunchBrowserTest.driver);
-
-		WebElement newaudit = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[1]/ul/li[6]/a/span"));
-		action.moveToElement(newaudit).click().build().perform();
-		Thread.sleep(1000);
-
-		// Get the element to be clicked to load the apk file
-		WebElement loadapk = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/div/form/div[1]/label"));
-		loadapk.click();
-
-		// Upload the file adding the required path in StringSelection arguements
-		StringSelection str = new StringSelection("C:\\Users\\Aditya\\Desktop\\apks\\com.fss.obc.apk");
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
-
-		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-
-		robot.keyPress(KeyEvent.VK_CONTROL);
-		robot.keyPress(KeyEvent.VK_V);
-		robot.keyRelease(KeyEvent.VK_V);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-
-		Thread.sleep(2000);
-
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-
-		WebElement submitform = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/div/form"));
-		submitform.submit();
-		Thread.sleep(1000);
-
-		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/form/div[2]"));
-		System.out.println(checkmsg.getText());
-		String actualstring = "×" + '\n' + "Warning!" + '\n' + "You have Insufficient Credits to SCAN your android app. To get more credits click here";
-		Assert.assertEquals(checkmsg.getText(), actualstring );
 
 		WebElement clickonlink = LaunchBrowserTest.driver.findElement(By.linkText("here"));
 		action.moveToElement(clickonlink).click().build().perform();
@@ -144,7 +178,7 @@ public class Free_user
 	 * This test case adds user through manage users tab available after post login for 
 	 * a free user
 	 */
-	@Test(dependsOnMethods = { "test_freeuserlogin", "test_NewAuditCleanapk","test_NewAuditBuggyapk"} )
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField","test_InvalidCredentials","test_NewAuditCleanapk"})
 	public void test_manageusers() throws InterruptedException
 	{
 		Actions action = new Actions(LaunchBrowserTest.driver);
@@ -158,7 +192,7 @@ public class Free_user
 		WebElement adduser = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[2]/a"));
 		action.moveToElement(adduser).click().build().perform();
 		Thread.sleep(1000);
-		
+
 		/*		
 		// Switch to popup
 		String parentWindowHandle = LaunchBrowserTest.driver.getWindowHandle(); // save the current window handle.
@@ -205,35 +239,35 @@ public class Free_user
 		WebElement geterrormsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[4]/form/div[2]/div/div[1]/div"));
 		String expected = "×" + '\n' + "Sorry you are not eligible to add subuser. Please upgrade your plan.";
 		Assert.assertEquals(geterrormsg.getText(), expected );
-				
+
 		// Click on close to close the pop up window
 		WebElement closepopup = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[4]/form/div[3]/button"));
 		closepopup.click();
 		Thread.sleep(1000);
 	}
-	
+
 	/*
 	 * @brief
 	 * This test case asserts for all the elements present on the web page
 	 */
-	@Test(dependsOnMethods = { "test_freeuserlogin", "test_NewAuditCleanapk","test_NewAuditBuggyapk","test_manageusers"} )
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField","test_InvalidCredentials","test_NewAuditCleanapk","test_manageusers"} )
 	public void test_Elements() throws InterruptedException
 	{
 		WebElement dashboard = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[1]/ul/li[2]/a/span"));
 		String expected = "Dashboard";
 		Assert.assertEquals(dashboard.getText(), expected );
-	
-		
+
+
 	}
-	
-	@Test(dependsOnMethods = { "test_freeuserlogin", "test_NewAuditCleanapk","test_NewAuditBuggyapk","test_manageusers","test_Elements"} )
+
+	@Test(dependsOnMethods = {"test_InvalidPasswordField","test_InvalidEmailidField","test_InvalidCredentials","test_NewAuditCleanapk","test_manageusers","test_Elements"} )
 	public void test_logout() throws InterruptedException
 	{
 		// Click on right hand corner to open a drop down menu 
 		WebElement dropdown = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div/div/ul/li/a/i"));
 		dropdown.click();
 		Thread.sleep(1000);
-		
+
 		// Click on right hand corner to open a drop down menu 
 		WebElement logout = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div/div/ul/li/ul/li[5]/a"));
 		logout.click();

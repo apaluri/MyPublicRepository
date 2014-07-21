@@ -48,7 +48,6 @@ public class Cleanapkload
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		Robot robot = new Robot();
-		robot.delay(1000);
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
@@ -59,7 +58,7 @@ public class Cleanapkload
 		robot.keyRelease(KeyEvent.VK_ENTER);
 		robot.delay(1000);
 
-		Thread.sleep(120000);
+		Thread.sleep(LaunchBrowserTest.timeout);
 
 		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/div[1]/div/div[1]/div"));
 		System.out.println(checkmsg.getText());

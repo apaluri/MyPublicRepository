@@ -24,7 +24,7 @@ import com.gargoylesoftware.htmlunit.html.SubmittableElement;
  * @author Aditya
  *
  */
-public class Paid_user 
+public class Paid_Buggyuser 
 {
 	@Test
 	public void test_paiduserlogin() throws InterruptedException
@@ -49,7 +49,7 @@ public class Paid_user
 	}
 
 	@Test(dependsOnMethods = {"test_paiduserlogin"})
-	public void test_NewAuditCleanapk() throws InterruptedException, AWTException
+	public void test_NewAuditBuggyapk() throws InterruptedException, AWTException
 	{
 		Actions action = new Actions(LaunchBrowserTest.driver);
 
@@ -63,10 +63,11 @@ public class Paid_user
 		loadapk.click();
 
 		// Upload the file adding the required path in StringSelection arguements
-		StringSelection str = new StringSelection(LaunchBrowserTest.cleanapkpath);
+		StringSelection str = new StringSelection(LaunchBrowserTest.buggyapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		Robot robot = new Robot();
+		robot.delay(1000);
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
@@ -95,27 +96,29 @@ public class Paid_user
 		System.out.println(getscanmsg.getText());
 		String actstring = "Please wait...we are using our magic wand on your android application. It might take few minutes. Please be patient.";
 		Assert.assertEquals(getscanmsg.getText(), actstring );
-
-		LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		
 		Thread.sleep(LaunchBrowserTest.timeout);
-		
-		
-		// Assert for successful testing of clean app for being bug-free
-		WebElement finalmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[1]/div/div"));
-		System.out.println(finalmsg.getText());
-		String finalactstring = ":) Wonderful!!!" + '\n' + '\n' + "No security bug has been found by Appvigil."  + '\n' + '\n' + "Please run the audit again after few days as we are adding vulnerabilities on daily basis.";
-		Assert.assertEquals(finalmsg.getText(), finalactstring );
-
+		LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+				
+		// Click on dashboard
 		WebElement dashboard = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[1]/ul/li[2]/a/span"));
 		action.moveToElement(dashboard).click().build().perform();
 		Thread.sleep(1000);
+		
+		// Click to get the detailed report
+		WebElement getreport = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[2]/div/h3/a"));
+		action.moveToElement(getreport).click().build().perform();
+		Thread.sleep(1000);
 
+		// Check for Bugs tag
+		WebElement bugfield = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/section/section[3]/table[1]/tbody/tr[1]/td[3]"));
+		action.moveToElement(bugfield).click().build().perform();
+		Thread.sleep(1000);
 
-		// Assert for successful testing of clean app for being bug-free in dashboard section
-		WebElement dashboardchk = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[2]/div/div"));
-		System.out.println(dashboardchk.getText());
-		String actstr = "You last audit seems to be pretty much clean. :)";
-		Assert.assertEquals(dashboardchk.getText(), actstr );
+		// Check for the bug count
+		WebElement bugcount = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[1]/section/section[3]/table[1]/tbody/tr[2]/td[3]"));
+		action.moveToElement(bugcount).click().build().perform();
+		Thread.sleep(1000);
 
 	}
 
@@ -124,7 +127,7 @@ public class Paid_user
 	 * This test case adds user through manage users tab available after post login for 
 	 * a free user
 	 */
-	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditCleanapk"} )
+	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditBuggyapk"} )
 	public void test_manageusers() throws InterruptedException
 	{
 		Actions action = new Actions(LaunchBrowserTest.driver);
@@ -197,7 +200,7 @@ public class Paid_user
 	 * @brief
 	 * This test case asserts for all the elements present on the web page
 	 */
-	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditCleanapk","test_manageusers"} )
+	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditBuggyapk","test_manageusers"} )
 	public void test_Elements() throws InterruptedException
 	{
 
@@ -218,7 +221,7 @@ public class Paid_user
 	}
 
 	// Logout parent user
-	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditCleanapk","test_manageusers"} )
+	@Test(dependsOnMethods = { "test_paiduserlogin", "test_NewAuditBuggyapk","test_manageusers"} )
 	public void test_logout() throws InterruptedException
 	{
 		// Click on right hand corner to open a drop down menu 

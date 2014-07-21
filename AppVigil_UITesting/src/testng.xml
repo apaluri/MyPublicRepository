@@ -1,21 +1,20 @@
 <?xml-version = "1.0"?>
 <suite name = "AppVigilTest">
-	<test name = "PreLogin">
+<test name = "PreLogin">
 		<classes>
 			<class name = "com.appvigil.testing.LaunchBrowserTest"></class>
-			<class name = "com.appvigil.testing.Home"></class>
-			<class name = "com.appvigil.testing.Buggy_Home"></class>
+			<class name = "com.appvigil.testing.Cleanapkload"></class>
 			<class name = "com.appvigil.testing.Feedback_Form"></class>
-			<class name = "com.appvigil.testing.Free_trial"></class>
-			<class name = "com.appvigil.testing.CloseBrowserTest"></class>
+			<class name = "com.appvigil.testing.Buggyapkload"></class>
+			<class name = "com.appvigil.testing.Feedback_Form"></class>
 		</classes>
 	</test>
 	<test name = "PostLogin">
 		<classes>
-			<class name = "com.appvigil.testing.LaunchBrowserTest"></class>
-			<class name = "com.appvigil.testing.Free_user"></class>
 			<class name = "com.appvigil.testing.Paid_user"></class>
+			<class name = "com.appvigil.testing.Paid_Buggyuser"></class>
 			<class name = "com.appvigil.testing.Paid_childuser"></class>
+			<class name = "com.appvigil.testing.CloseBrowserTest"></class>
 			<class name = "com.appvigil.testing.CloseBrowserTest"></class>
 		</classes>
 	</test>

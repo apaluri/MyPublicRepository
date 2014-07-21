@@ -74,28 +74,25 @@ public class Paid_childuser
 		Thread.sleep(1000);
 
 		// Upload the file adding the required path in StringSelection arguements
-		StringSelection str = new StringSelection("C:\\Users\\Aditya\\Desktop\\apks\\aaaaaHelloWorld.apk");
+		StringSelection str = new StringSelection(LaunchBrowserTest.cleanapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 
-		Thread.sleep(2000);
-
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		WebElement submitform = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/div/form"));
 		submitform.submit();
 		Thread.sleep(1000);
 
-		LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
 
 		// Message to check if the apk is loaded successfulyy and ready to be scanned by assertion
 		WebElement checkmsg = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/form/div"));
@@ -115,6 +112,7 @@ public class Paid_childuser
 		Assert.assertEquals(getscanmsg.getText(), actstring );
 
 		// Implicit Wait for loading of apk 
+		Thread.sleep(LaunchBrowserTest.timeout);
 		LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
 		// Assert for successful testing of clean app for being bug-free
@@ -147,22 +145,20 @@ public class Paid_childuser
 		Thread.sleep(1000);
 
 		// Upload the buggy file adding the required path in StringSelection arguements
-		StringSelection str = new StringSelection("C:\\Users\\Aditya\\Desktop\\apks\\com.fss.obc.apk");
+		StringSelection str = new StringSelection(LaunchBrowserTest.buggyapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
 		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
 
-		Thread.sleep(2000);
-
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		// Submit the pop up form
 		WebElement submitform = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[2]/div/form"));
@@ -187,7 +183,9 @@ public class Paid_childuser
 		Assert.assertEquals(getscanmsg.getText(), actstring );
 
 		// Wait for 180 secs duration for the application to be loaded
+		Thread.sleep(LaunchBrowserTest.timeout);
 		LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(180, TimeUnit.SECONDS);
+
 
 		// Click to start auditing the report
 		WebElement auditrep = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[1]/div/p/a"));
@@ -198,7 +196,7 @@ public class Paid_childuser
 		WebElement downloadreport = LaunchBrowserTest.driver.findElement(By.xpath("html/body/div[2]/div[2]/div/div[3]/div[1]/div[1]/a[2]"));
 		action.moveToElement(downloadreport).click().build().perform();
 		Thread.sleep(1000);*/
-		
+
 	}
 
 	@Test(dependsOnMethods = {"test_childuserlogin","test_ChildscanCleanapk","test_childmultiplescans"})
@@ -219,7 +217,7 @@ public class Paid_childuser
 
 		Thread.sleep(1000);
 	}
-	
+
 	// Logout child user 
 	@Test(dependsOnMethods = {"test_childuserlogin","test_ChildscanCleanapk","test_childmultiplescans","test_Elements"})
 	public void test_childlogout() throws InterruptedException
