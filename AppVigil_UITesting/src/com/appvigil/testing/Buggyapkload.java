@@ -51,13 +51,24 @@ public class Buggyapkload
 		StringSelection str = new StringSelection(LaunchBrowserTest.buggyapkpath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(str, null);
 
+		robot.delay(1000);
 		robot.keyPress(KeyEvent.VK_CONTROL);
 		robot.keyPress(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_V);
 		robot.keyRelease(KeyEvent.VK_CONTROL);
-
+		robot.delay(1000);
+		robot.keyPress(KeyEvent.VK_RIGHT);
+		robot.keyRelease(KeyEvent.VK_RIGHT);
+		robot.delay(1000);
+		robot.keyPress(KeyEvent.VK_TAB);
+		robot.keyRelease(KeyEvent.VK_TAB);
+		robot.delay(1000);
+		robot.keyPress(KeyEvent.VK_TAB);
+		robot.keyRelease(KeyEvent.VK_TAB);
+		robot.delay(1000);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.delay(1000);
 
 		//	LaunchBrowserTest.driver.manage().timeouts().implicitlyWait(180, TimeUnit.SECONDS);
 		Thread.sleep(LaunchBrowserTest.timeout);
